@@ -228,9 +228,9 @@
 
     <!-- apostile_robot_ gazebo_plugins-->
     <gazebo reference="lidar">
-        <sensor type="gpu_ray" name="lidar_sensor">
+        <sensor type="ray" name="head_hokuyo_sensor">
             <pose>0 0 0 0 0 0</pose>
-            <visualize>false</visualize>
+            <visualize>true</visualize>
             <update_rate>40</update_rate>
             <ray>
                 <scan>
@@ -242,8 +242,8 @@
                     </horizontal>
                 </scan>
                 <range>
-                    <min>0.10</min>
-                    <max>30.0</max>
+                    <min>0.08</min>
+                    <max>12.0</max>
                     <resolution>0.01</resolution>
                 </range>
                 <noise>
@@ -256,7 +256,7 @@
                     <stddev>0.01</stddev>
                 </noise>
             </ray>
-            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
                 <topicName>/scan</topicName>
                 <frameName>lidar_link</frameName>
             </plugin>
@@ -291,7 +291,7 @@
             <wheelAcceleration>5.0</wheelAcceleration>
 
             <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
-            <wheelTorque>30</wheelTorque>
+            <wheelTorque>40</wheelTorque>
 
             <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
             <commandTopic>cmd_vel</commandTopic>
@@ -349,7 +349,7 @@
             <wheelAcceleration>5.0</wheelAcceleration>
 
             <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
-            <wheelTorque>30</wheelTorque>
+            <wheelTorque>40</wheelTorque>
 
             <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
             <commandTopic>cmd_vel</commandTopic>
