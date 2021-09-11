@@ -1,14 +1,9 @@
 
 <launch>
 
-    <!-- <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/> -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="worlds/empty.world"/>
-        <arg name="verbose" value="true"/>
-        <arg name="gui" value="true"/>
-    </include>
-
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
-    args="-urdf -file $(find apostile_robot)/urdf/robot1.urdf -model robot1"/>
+    <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1"/>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+         args="-param robot_description -urdf -model robot1"/>
         
 </launch>
