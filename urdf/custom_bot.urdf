@@ -2,9 +2,14 @@
 <robot name="apostile_robot">
 
     
+    
+
+    
+    
+
 
     <!--base_link-->
-    <link name="base_link">
+    <link name="Robot_base">
 
         <visual>
             
@@ -14,7 +19,7 @@
             </geometry>
             <material name = "white">
 
-                <color rgba="255 255 255 1"/>
+                <color rgba="10 10 10 0.1"/>
             </material>
         </visual>
         <collision>
@@ -30,6 +35,39 @@
         </inertial>
         
     </link>
+
+
+    <!-- <link name="imu_data"> 
+
+        <visual>
+            
+        
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+            <material name = "white">
+
+                <color rgba="10 10 10 0.1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.366 0.2934 0.136"/>
+            </geometry>
+            
+        </collision>
+
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+    <parent link="Robot_base"/>
+    <child link="imu_data"/>
+    <axis xyz="0 0 0"/>
+    <origin xyz="0.00 0.00 0.00" rpy="0 0 0"/>
+    
+    </joint>-->
+
+    
 
     
     
@@ -61,7 +99,7 @@
        
     </link>
     <joint name="front_left_wheel_joint" type="continuous">
-        <parent link="base_link"/>
+        <parent link="Robot_base"/>
         <child link="front_left_wheel"/>
         <axis xyz="0 0 1"/>
         <origin xyz="0.10509 0.11577 -0.03856" rpy="-1.5707 0 0"/>
@@ -101,7 +139,7 @@
 
     </link>
     <joint name="front_right_wheel_joint" type="continuous">
-        <parent link="base_link"/>
+        <parent link="Robot_base"/>
         <child link="front_right_wheel"/>
         <axis xyz="0 0 1"/>
         <origin xyz="0.10509 -0.11577 -0.03856" rpy="-1.5707 0 0"/>
@@ -139,7 +177,7 @@
     </link>
 
     <joint name="back_left_wheel_joint" type="continuous">
-        <parent link="base_link"/>
+        <parent link="Robot_base"/>
         <child link="back_left_wheel"/>
         <axis xyz="0 0 1"/>
         <origin xyz="-0.10509 0.11577 -0.03856" rpy="-1.5707 0 0"/>
@@ -179,7 +217,7 @@
 
 
     <joint name="back_right_wheel_joint" type="continuous">
-        <parent link="base_link"/>
+        <parent link="Robot_base"/>
         <child link="back_right_wheel"/>
         <axis xyz="0 0 1"/>
         <origin xyz="-0.10509 -0.11577 -0.03856" rpy="-1.5707 0 0"/>
@@ -215,7 +253,7 @@
     </link>
 
     <joint name="lidar_joint" type="fixed">
-        <parent link="base_link"/>
+        <parent link="Robot_base"/>
         <child link="lidar"/>
         <origin xyz="0.0 0.0 0.095" rpy="0.0 0.0 0.0"/>
     </joint>
@@ -230,7 +268,7 @@
     <gazebo reference="lidar">
         <sensor type="ray" name="head_hokuyo_sensor">
             <pose>0 0 0 0 0 0</pose>
-            <visualize>false</visualize>
+            <visualize>true</visualize>
             <update_rate>40</update_rate>
             <ray>
                 <scan>
@@ -258,7 +296,8 @@
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
                 <topicName>/scan</topicName>
-                <frameName>lidar_link</frameName>
+                <frameName>lidar</frameName> 
+                <!-- frame name should match link name  -->
             </plugin>
         </sensor>
     </gazebo>
@@ -270,7 +309,7 @@
     <!--back wheel-->
 
     <gazebo>
-        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+        <plugin name="differential_drive_controllerr" filename="libgazebo_ros_diff_drive.so">
 
             <!-- Plugin update rate in Hz -->
             <updateRate>100</updateRate>
@@ -288,7 +327,7 @@
             <wheelDiameter>0.12</wheelDiameter>
 
             <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
-            <wheelAcceleration>5.0</wheelAcceleration>
+            <wheelAcceleration>5</wheelAcceleration>
 
             <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
             <wheelTorque>40</wheelTorque>
@@ -303,7 +342,7 @@
             <odometryFrame>odom</odometryFrame>
 
             <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
-            <robotBaseFrame>base_footprint</robotBaseFrame>
+            <robotBaseFrame>Robot_base</robotBaseFrame> <!--name should be changed according to our base link name-->
 
             <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
             <odometrySource>1</odometrySource>
@@ -316,6 +355,7 @@
 
             <!-- Set to true to publish sensor_msgs/JointState on /joint_states for the wheel joints, defaults to false -->
             <publishWheelJointState>true</publishWheelJointState>
+
 
             <!-- Set to true to swap right and left wheels, defaults to true -->
             <legacyMode>false</legacyMode>
@@ -350,7 +390,7 @@
             <wheelDiameter>0.12</wheelDiameter>
 
             <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
-            <wheelAcceleration>5.0</wheelAcceleration>
+            <wheelAcceleration>5</wheelAcceleration>
 
             <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
             <wheelTorque>40</wheelTorque>
@@ -365,7 +405,7 @@
             <odometryFrame>odom</odometryFrame>
 
             <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
-            <robotBaseFrame>base_footprint</robotBaseFrame>
+            <robotBaseFrame>Robot_base</robotBaseFrame> <!--name should be changed according to our base link name-->
 
             <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
             <odometrySource>1</odometrySource>
@@ -386,6 +426,27 @@
         </plugin>
     </gazebo>
 
+    
+    <gazebo reference="imu_link">
+        <gravity>true</gravity>
+        <sensor name="imu_sensor" type="imu">
+            <always_on>true</always_on>
+            <update_rate>100</update_rate>
+            <visualize>true</visualize>
+             <topic>imu_data</topic>
+            <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+                <topicName>imu</topicName>
+                <bodyName>imu_link</bodyName>
+                <updateRateHZ>10.0</updateRateHZ>
+                <gaussianNoise>0.0</gaussianNoise>
+                <xyzOffset>0 0 0</xyzOffset>
+                <rpyOffset>0 0 0</rpyOffset>
+                <frameName>imu_link</frameName>
+                <initialOrientationAsReference>false</initialOrientationAsReference>
+            </plugin>
+            <pose>0 0 0 0 0 0</pose>
+        </sensor>
+    </gazebo>
     
 
     
