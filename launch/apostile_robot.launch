@@ -3,7 +3,7 @@
     
     <param name="robot_description" textfile="$(find apostile_robot)/urdf/custom_bot.urdf"/>
     <include file = "$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find apostile_robot)/worlds/empty_world.launch"/>
+        <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
         <arg name="verbose" value="true"/>
         <arg name="gui" value="true"/>
         
@@ -15,6 +15,8 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
         <param name="use_gui" value="true"/>
+        
+        
     </node>
     
         

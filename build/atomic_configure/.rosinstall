@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/vishal/catkin_ws/src/apostile_robot/build/devel/setup.sh
