@@ -1,10 +1,23 @@
 
 <launch>
 
-    <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
-    <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-          args="-param robot_description -urdf -model robot1"/>
+        <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
+            <arg name="gui" value="true"/>
+        </include>
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+                args="-param robot_description -urdf -model robot1"/>
+        
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"> 
+                <param name="use_gui" value="true"/>
+        </node>               
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>           
+
 
         
 </launch>
+
+
+
+ 
