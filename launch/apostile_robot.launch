@@ -21,25 +21,43 @@
            <!-- robot_state_publisher and joint_state_publisher is very important in any project -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <param name="use_gui" value="true"/>
+        <param name="use_gui" value="false  "/>
         
         
-    </node>
-    
-        <!-- Note:: The wheel joints data is collected by joint state and it will give the data to robot state .... This process will start to send odom values  -->
-        
-    <node pkg="move_base" type="move_base" name="move_base" output="screen">
-        <param name="controller_frequency" value="10.0"/>
-        <rosparam file="$(find apostile_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
-        <rosparam file="$(find apostile_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
-        <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
-        <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
-        <rosparam file="$(find apostile_robot)/config/trajectory_planner.yaml" command="load"/>
     </node>
 
     <arg name="map_file" default="$(find apostile_robot)/maps/final_path.yaml"/>
     <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
     <include file="$(find apostile_robot)/launch/amcl.launch"/>
+
+
+
+
+    
+        <!-- Note:: The wheel joints data is collected by joint state and it will give the data to robot state .... This process will start to send odom values  -->
+        
+    <node pkg="move_base" type="move_base" name="move_base" output="screen">
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+        <!-- <param name="global_costmap_params" value="global_planner/GlobalPlanner" /> -->
+        <param name="shutdown_costmaps" value="false"/>
+        <param name="controller_frequency" value="10"/>
+        <param name="planner_patience" value="5.0"/>
+        <param name="controller_patience" value="15.0"/>
+        <param name="conservative_reset_dist" value="3.0"/>
+        <param name="planner_frequency" value="5.0"/>
+        <param name="oscillation_timeout" value="10.0"/>
+        <param name="oscillation_distance" value="0.2"/>
+       
+        <rosparam file="$(find apostile_robot)/config/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+        <rosparam file="$(find apostile_robot)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find apostile_robot)/config/base_local_planner.yaml" command="load"/>
+        
+        
+    </node>
+
+    
 
     
         
