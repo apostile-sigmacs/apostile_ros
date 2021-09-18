@@ -13,7 +13,7 @@ robot_base_frame: Robot_base
 update_frequency: 10 #before: 5.0
 publish_frequency: 0.5 #before 0.5
 
-transform_tolerance: 
+transform_tolerance: 0.9
 resolution: 0.06
 
 lehtal_cost_threshold: 100.0
