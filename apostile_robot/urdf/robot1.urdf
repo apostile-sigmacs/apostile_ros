@@ -1,36 +1,230 @@
-
-<launch>
-
-        <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
-        <include file="$(find gazebo_ros)/launch/empty_world.launch">
-            <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
-            <arg name="gui" value="true"/>
-        </include>
+<?xml version= "1.0" ?>
+<robot name = "apostile_robot">
 
 
 
 
 
 
-        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-                args="-param robot_description -urdf -model robot1"/>
+    <link name = "base_link">
+        <visual>
+            <geometry>
+               <box size="0.366 0.2934 0.136"/>
+            </geometry>
+            <material name = "white">
+                <color rgba="1 1 1 1"/> 
+            </material>
+    
+        </visual>
+        <collision>
+            <geometry>
+               <box size="0.366 0.2934 0.136"/>
+            </geometry>
+            
+        </collision>
+        <inertial>
+            <mass value="5.6"/>
+            <inertia ixx="0.0711" ixy="0.0" ixz="0.0" iyy="0.06762" iyz="0.0" izz="0.01422"/>
+        </inertial>
+    </link>  
 
 
 
 
 
 
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> 
+
+
+
+    <link name = "back_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.025"/>            
+            </geometry>
+            <material name = "black">
+                <color rgba= "0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            
+        </collision>
+        <inertial>
+            <mass value="0.6"/>
+            <inertia ixx="5.7125e-4" ixy="0.0" ixz="0.0" iyy="5.7125e-4" iyz="0.0" izz="1.08e-3"/>
+        </inertial>
+    </link>
+    <joint name = "back_right_wheel_joint" type ="continuous">
+        <axis xyz = "0.0 0.0 1"/>
+        <parent link= "base_link"/>
+        <child link = "back_right_wheel"/>
+        <origin xyz = "-0.10509 -0.11577 -0.05" rpy= "-1.5708 0.0 0.0"/>
+    </joint>
+
+
+
+
+
+
+
+
+
+
+
+    <link name = "back_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.060" length="0.025"/>            
+            </geometry>
+            <material name = "black">
+                <color rgba= "0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            
+        </collision>
+        <inertial>
+            <mass value="0.6"/>
+            <inertia ixx="5.7125e-4" ixy="0.0" ixz="0.0" iyy="5.7125e-4" iyz="0.0" izz="1.08e-3"/>
+        </inertial>
         
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"> 
-                <param name="use_gui" value="false"/>
-        </node>               
+    </link>
+    <joint name = "back_left_wheel_joint" type ="continuous">
+        <axis xyz = "0.0 0.0 1"/>
+        <parent link= "base_link"/>
+        <child link = "back_left_wheel"/>
+        <origin xyz = "-0.10509 0.11577 -0.05" rpy= "-1.5708 0.0 0.0"/>
+    </joint>
+
+
+
+
+
+
+
+
+
+
+
+
+    <link name = "front_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.025"/>            
+            </geometry>
+            <material name = "black">
+                <color rgba= "0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            
+        </collision>
+        <inertial>
+            <mass value="0.6"/>
+            <inertia ixx="5.7125e-4" ixy="0.0" ixz="0.0" iyy="5.7125e-4" iyz="0.0" izz="1.08e-3"/>
+        </inertial>
+    </link>
+    <joint name = "front_right_wheel_joint" type ="continuous">
+        <axis xyz = "0.0 0.0 1"/>
+        <parent link= "base_link"/>
+        <child link = "front_right_wheel"/>
+        <origin xyz = "0.10509 -0.11577 -0.05" rpy= "-1.5708 0.0 0.0"/>
+    </joint>
+
+
+
+
+
+
+
+
+
+    <link name = "front_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.060" length="0.025"/>            
+            </geometry>
+            <material name = "black">
+                <color rgba= "0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="0.06" length="0.025"/>
+            </geometry>
+            
+        </collision>
+        <inertial>
+            <mass value="0.6"/>
+            <inertia ixx="5.7125e-4" ixy="0.0" ixz="0.0" iyy="5.7125e-4" iyz="0.0" izz="1.08e-3"/>
+        </inertial>
+    </link>
+    <joint name = "front_left_wheel_joint" type ="continuous">
+        <axis xyz = "0.0 0.0 1"/>
+        <parent link= "base_link"/>
+        <child link = "front_left_wheel"/>
+        <origin xyz = "0.10509 0.11577 -0.05" rpy= "-1.5708 0.0 0.0"/>
+    </joint>
+
+
+
+
+
+
+
+
+    <link name = "rp_link">
+        <visual>
+            <geometry>
+               <cylinder radius="0.035" length="0.055"/> 
+            </geometry>
+            <material name = "white">
+                <color rgba="1 1 1 1"/> 
+            </material>
+    
+        </visual>
+        <collision>
+            <geometry>
+               <cylinder radius="0.035" length="0.055"/>
+            </geometry>
+            
+        </collision>
         
-        
-        
-        
-        
-        <include file= "$(find apostile_robot)/launch/amcl.launch"/>
+    </link>
+    <joint name = "rp_joint" type ="fixed">
+        <axis xyz = "0.0 0.0 0.0"/>
+        <parent link= "base_link"/>
+        <child link = "rp_link"/>
+        <origin xyz = "0 0 0.0955" rpy= "0.0 0.0 0.0"/>
+    </joint>
+
+
+
+
+    <gazebo>
+        <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+            <updateRate>100.0</updateRate>
+            <robotNamespace>/</robotNamespace>
+            <leftFrontJoint>front_left_wheel_joint</leftFrontJoint>
+            <rightFrontJoint>front_right_wheel_joint</rightFrontJoint>
+            <leftRearJoint>back_left_wheel_joint</leftRearJoint>
+            <rightRearJoint>back_right_wheel_joint</rightRearJoint>
+            <wheelSeparation>0.231</wheelSeparation>
+            <wheelDiameter>0.120</wheelDiameter>
+            <robotBaseFrame>base_link</robotBaseFrame>
+            <torque>40</torque>
+            <topicName>cmd_vel</topicName>
+            <broadcastTF>true</broadcastTF>
+        </plugin>
+    </gazebo>
 
 
 
@@ -38,81 +232,42 @@
 
 
 
-        
-
-        <!-- <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/> -->
-        <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apostile_robot)/rviz/slam.rviz" />
-        
 
 
+    <gazebo reference="rp_link">
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>40</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-1.570796</min_angle>
+                        <max_angle>1.570796</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.10</min>
+                    <max>8.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <topicName>scan</topicName>
+                <frameName>rp_link</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+</robot>
 
 
-
-        <arg name="map_file" default="$(find apostile_robot)/map.yaml"/>
-        <!-- Run the map server -->
-        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
-
-
-
-
-
-
-
-        <node pkg="gmapping" type="slam_gmapping" name="gmapping" > <!-- it one type of slam mapping -->
-                <param name="base_frame" value="base_link"/> <!--base_link of the robot -->
-                <param name="odom_frame" value="odom"/> <!--odom_frame it will give the data of wheels odom values-->
-                <param name="delta" value="0.01"/> <!--0.1 meter thinkness of gazebo cells -->
-                <param name="map_update_interval" value="5.0"/>
-                <param name="maxUrange" value="6.0"/>
-                <param name="maxRange" value="8.0"/>
-                <param name="sigma" value="0.05"/>
-                <param name="kernelSize" value="1"/>
-                <param name="lstep" value="0.05"/>
-                <param name="astep" value="0.05"/>
-                <param name="iterations" value="5"/>
-                <param name="lsigma" value="0.075"/>
-                <param name="ogain" value="3.0"/>
-                <param name="lskip" value="0"/>
-                <param name="minimumScore" value="200"/>
-                <param name="srr" value="0.01"/>
-                <param name="srt" value="0.02"/>
-                <param name="str" value="0.01"/>
-                <param name="stt" value="0.02"/>
-                <param name="linearUpdate" value="0.5"/>
-                <param name="angularUpdate" value="0.436"/>
-                <param name="temporalUpdate" value="-1.0"/>
-                <param name="resampleThreshold" value="0.5"/>
-                <param name="particles" value="80"/>
-                <param name="xmin" value="-1.0"/>
-                <param name="ymin" value="-1.0"/>
-                <param name="xmax" value="1.0"/>
-                <param name="ymax" value="1.0"/>
-
-                
-                <param name="llsamplerange" value="0.01"/>
-                <param name="llsamplestep" value="0.01"/>
-                <param name="lasamplerange" value="0.005"/>
-                <param name="lasamplestep" value="0.005"/>
-                
-        </node>
-
-        <node name="move_base" pkg="move_base" type="move_base">
-                
-                
-                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="global_costmap"/>
-                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="local_costmap"/>
-                <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/base_local_planner_params.yaml" command="load"/>
-        </node>
-        
-
-                        
-
-
-        
-</launch>
 
 
        
