@@ -1,15 +1,119 @@
-<?xml version= "1.0" ?>
-<robot name = "apostile_robot">
-    <link name = "base_link">
-        <visual>
-            <geometry>
-               <box size="0.6 0.3 0.1"/>
-            </geometry>
-            <material name = "white">
-                <!-- <color rgba="${255/255} ${255/255} ${255/255} 1"/>  -->
-                <color rgba="1 1 1 1"/>
-            </material>
-    
-        </visual>
-    </link> 
-</robot>
+
+<launch>
+
+        <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
+            <arg name="gui" value="true"/>
+        </include>
+
+
+
+
+
+
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+                args="-param robot_description -urdf -model robot1"/>
+
+
+
+
+
+
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> 
+        
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"> 
+                <param name="use_gui" value="false"/>
+        </node>               
+        
+        
+        
+        
+        
+        <include file= "$(find apostile_robot)/launch/amcl.launch"/>
+
+
+
+
+
+
+
+        
+
+        <!-- <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/> -->
+        <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apostile_robot)/rviz/slam.rviz" />
+        
+
+
+
+
+
+        <arg name="map_file" default="$(find apostile_robot)/map.yaml"/>
+        <!-- Run the map server -->
+        <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+
+
+
+
+
+
+        <node pkg="gmapping" type="slam_gmapping" name="gmapping" > <!-- it one type of slam mapping -->
+                <param name="base_frame" value="base_link"/> <!--base_link of the robot -->
+                <param name="odom_frame" value="odom"/> <!--odom_frame it will give the data of wheels odom values-->
+                <param name="delta" value="0.01"/> <!--0.1 meter thinkness of gazebo cells -->
+                <param name="map_update_interval" value="5.0"/>
+                <param name="maxUrange" value="6.0"/>
+                <param name="maxRange" value="8.0"/>
+                <param name="sigma" value="0.05"/>
+                <param name="kernelSize" value="1"/>
+                <param name="lstep" value="0.05"/>
+                <param name="astep" value="0.05"/>
+                <param name="iterations" value="5"/>
+                <param name="lsigma" value="0.075"/>
+                <param name="ogain" value="3.0"/>
+                <param name="lskip" value="0"/>
+                <param name="minimumScore" value="200"/>
+                <param name="srr" value="0.01"/>
+                <param name="srt" value="0.02"/>
+                <param name="str" value="0.01"/>
+                <param name="stt" value="0.02"/>
+                <param name="linearUpdate" value="0.5"/>
+                <param name="angularUpdate" value="0.436"/>
+                <param name="temporalUpdate" value="-1.0"/>
+                <param name="resampleThreshold" value="0.5"/>
+                <param name="particles" value="80"/>
+                <param name="xmin" value="-1.0"/>
+                <param name="ymin" value="-1.0"/>
+                <param name="xmax" value="1.0"/>
+                <param name="ymax" value="1.0"/>
+
+                
+                <param name="llsamplerange" value="0.01"/>
+                <param name="llsamplestep" value="0.01"/>
+                <param name="lasamplerange" value="0.005"/>
+                <param name="lasamplestep" value="0.005"/>
+                
+        </node>
+
+        <node name="move_base" pkg="move_base" type="move_base">
+                
+                
+                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="global_costmap"/>
+                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="local_costmap"/>
+                <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
+                <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
+                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load"/>
+                <rosparam file="$(find apostile_robot)/config/base_local_planner_params.yaml" command="load"/>
+        </node>
+        
+
+                        
+
+
+        
+</launch>
+
+
+
+ 

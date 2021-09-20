@@ -1,77 +1,72 @@
-
 <launch>
-
-        <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
-        <include file="$(find gazebo_ros)/launch/empty_world.launch">
-            <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
-            <arg name="gui" value="true"/>
-        </include>
-        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-                args="-param robot_description -urdf -model robot1"/>
+    <!-- we are assigning our custom_bot.urdf file to robot_description -->
+    <param name="robot_description" textfile="$(find apostile_robot)/urdf/robot1.urdf"/>
+    <!-- Reason behind include file: we are including our empty-world.launch into gazebo_ros -->
+    <include file = "$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- after the include, we pass the world created by us as an arguement with a name called world_name -->
+        <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
+        <!-- verbose indicates the warning messages  -->
+        <arg name="verbose" value="true"/> 
+        <!-- GUI helps to visulise the user interface  -->
+        <arg name="gui" value="true"/>
         
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"> 
-                <param name="use_gui" value="false"/>
-        </node>               
-        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/> 
+           
+
+    </include>  
+         <!--we are spawing our robot in gazebo_ros and the type is spawn model  -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+           args="-param robot_description -urdf -model robot1.urdf" />     
+           <!-- we call the robot_description where we stored the custom_bot.urdf -->
+           <!-- robot_state_publisher and joint_state_publisher is very important in any project -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="false  "/>
+    <!-- joint state publisher publishes the wheel data tp robot_state_publsiher  -->
+        
+        
+    </node>
+
+    <arg name="map_file" default="$(find apostile_robot)/map/map.yaml"/>
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+    <include file="$(find apostile_robot)/launch/amcl.launch"/>
+    <!-- amcl is used to know robots position in the coordinate frame  -->
 
 
-        <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/>
-        <node pkg="rviz" type="rviz" name="rviz" args="-d $(find apostile_robot)/rviz/slam.rviz" />
 
-        <node pkg="gmapping" type="slam_gmapping" name="gmapping" > <!-- it one type of slam mapping -->
-                <param name="base_frame" value="base_link"/> <!--base_link of the robot -->
-                <param name="odom_frame" value="odom"/> <!--odom_frame it will give the data of wheels odom values-->
-                <param name="delta" value="0.01"/> <!--0.1 meter thinkness of gazebo cells -->
-                <param name="map_update_interval" value="5.0"/>
-                <param name="maxUrange" value="6.0"/>
-                <param name="maxRange" value="8.0"/>
-                <param name="sigma" value="0.05"/>
-                <param name="kernelSize" value="1"/>
-                <param name="lstep" value="0.05"/>
-                <param name="astep" value="0.05"/>
-                <param name="iterations" value="5"/>
-                <param name="lsigma" value="0.075"/>
-                <param name="ogain" value="3.0"/>
-                <param name="lskip" value="0"/>
-                <param name="minimumScore" value="200"/>
-                <param name="srr" value="0.01"/>
-                <param name="srt" value="0.02"/>
-                <param name="str" value="0.01"/>
-                <param name="stt" value="0.02"/>
-                <param name="linearUpdate" value="0.5"/>
-                <param name="angularUpdate" value="0.436"/>
-                <param name="temporalUpdate" value="-1.0"/>
-                <param name="resampleThreshold" value="0.5"/>
-                <param name="particles" value="80"/>
-                <param name="xmin" value="-1.0"/>
-                <param name="ymin" value="-1.0"/>
-                <param name="xmax" value="1.0"/>
-                <param name="ymax" value="1.0"/>
 
-                
-                <param name="llsamplerange" value="0.01"/>
-                <param name="llsamplestep" value="0.01"/>
-                <param name="lasamplerange" value="0.005"/>
-                <param name="lasamplestep" value="0.005"/>
-                
-        </node>
+    
+        <!-- Note:: The wheel joints data is collected by joint state and it will give the data to robot state .... This process will start to send odom values  -->
+        
+    <node pkg="move_base" type="move_base" name="move_base" output="screen">
+        <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+        <!-- <param name="base_global_planner" value="navfn/NavfnROS" /> -->
+        
+        <param name="shutdown_costmaps" value="false"/>
+        <param name="controller_frequency" value="10"/>
+        <param name="planner_patience" value="5.0"/>
+        <param name="controller_patience" value="15.0"/>
+        <param name="conservative_reset_dist" value="3.0"/>
+        <param name="planner_frequency" value="5.0"/>
+        <param name="oscillation_timeout" value="10.0"/>
+        <param name="oscillation_distance" value="0.2"/>
+       
+        <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="global_costmap"/>
 
-        <node name= "move_base" pkg="move_base" type="move_base" >
-                <rosparam file="$(find apostile_robot)/config/costmap_common_params_$(arg model).yaml" command="load" ns="global_costmap"/>
-                <rosparam file="$(find apostile_robot)/config/costmap_common_params_$(arg model).yaml" command="load" ns="local_costmap"/>
-                <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load"/>
-                <rosparam file="$(find apostile_robot)/config/base_local_planner_params.yaml" command="load"/>
-        </node>
+        <rosparam file="$(find apostile_robot)/config/common_costmap_params.yaml" command="load" ns="local_costmap"/>
+        <rosparam file="$(find apostile_robot)/config/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find apostile_robot)/config/base_local_planner_params.yaml" command="load"/>
+        <!-- <rosparam file="$(find apostile_robot)/config/base_global_planner_params.yaml" command="load"/> -->
+        
+        
+        
+    </node>
+
+    
+
+    
         
 
-                        
-
-
-        
+   
+           
 </launch>
-
-
-
- 
