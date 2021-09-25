@@ -6,6 +6,8 @@
     <include file = "$(find gazebo_ros)/launch/empty_world.launch">
         <!-- after the include, we pass the world created by us as an arguement with a name called world_name -->
         <arg name="world_name" value="$(find apostile_robot)/worlds/empty.world"/>
+        <!-- <arg name="world_name" value="$(find rrt_exploration_tutorials)/launch/includes/worlds/MTR.world"/> -->
+
         <!-- verbose indicates the warning messages  -->
         <arg name="verbose" value="true"/> 
         <!-- GUI helps to visulise the user interface  -->
@@ -27,10 +29,21 @@
         
     </node>
 
-    <arg name="map_file" default="$(find apostile_robot)/maps/final_path.yaml"/>
+    <arg name="map_file" default="$(find apostile_robot)/maps/my_nav.yaml"/>
     <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+   
+
+
+    
+    
+    
+        
+    
     <include file="$(find apostile_robot)/launch/amcl.launch"/>
     <!-- amcl is used to know robots position in the coordinate frame  -->
+    
+        
+    
 
 
 
@@ -39,8 +52,10 @@
         <!-- Note:: The wheel joints data is collected by joint state and it will give the data to robot state .... This process will start to send odom values  -->
         
     <node pkg="move_base" type="move_base" name="move_base" output="screen">
+        
         <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
         <param name="base_global_planner" value="navfn/NavfnROS" />
+        
         
         <param name="shutdown_costmaps" value="false"/>
         <param name="controller_frequency" value="10"/>
@@ -58,16 +73,7 @@
         <rosparam file="$(find apostile_robot)/config/global_costmap_params.yaml" command="load"/>
         <rosparam file="$(find apostile_robot)/config/base_local_planner.yaml" command="load"/>
         <rosparam file="$(find apostile_robot)/config/base_global_planner.yaml" command="load"/>
-        
-        
-        
+
     </node>
-
-    
-
-    
         
-
-   
-           
 </launch>

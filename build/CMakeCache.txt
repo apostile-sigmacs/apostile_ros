@@ -356,7 +356,7 @@ std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
 ########################
 
 //catkin environment
-CATKIN_ENV:INTERNAL=
+CATKIN_ENV:INTERNAL=/home/vishal/catkin_ws/src/apostile_robot/build/catkin_generated/env_cached.sh
 CATKIN_TEST_RESULTS_DIR:INTERNAL=/home/vishal/catkin_ws/src/apostile_robot/build/test_results
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1

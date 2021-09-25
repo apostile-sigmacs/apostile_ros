@@ -4,3 +4,6 @@ NavfnROS:
   planner_window_y: 0
   default_tolerance: 0
   visualize_potential: true
+
+  
+
