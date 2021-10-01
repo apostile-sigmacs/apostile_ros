@@ -37,7 +37,9 @@
     
     
     
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find apostile_robot)/rviz/navigationn.rviz" />
         
+          
     
     <include file="$(find apostile_robot)/launch/amcl.launch"/>
     <!-- amcl is used to know robots position in the coordinate frame  -->

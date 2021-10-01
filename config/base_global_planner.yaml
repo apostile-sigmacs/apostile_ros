@@ -4,6 +4,12 @@ NavfnROS:
   planner_window_y: 0
   default_tolerance: 0
   visualize_potential: true
+  
+  use_djikstra: true
+  use_quadratic: true
+  use_grid_path: false
+  old_nav_behaviour: true
+  
 
   
 

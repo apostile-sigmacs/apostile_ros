@@ -1,12 +1,12 @@
 local_costmap:
   global_frame: odom
-  update_frequency: 5.0
+  update_frequency: 1.0
   publish_frequency: 5.0
   
   rolling_window: true
-  width: 7
-  height: 7
-  static_map: false
+  width: 3
+  height: 3
+  static_map: false 
   resolution: 0.01
 
 

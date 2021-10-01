@@ -251,10 +251,16 @@ SETUPTOOLS_DEB_LAYOUT:BOOL=ON
 SITE:STRING=vishal
 
 //LSB Distrib tag
+TRUE:BOOL=
+
+//LSB Distrib tag
 UBUNTU:BOOL=TRUE
 
 //LSB Distrib - codename tag
 UBUNTU_BIONIC:BOOL=TRUE
+
+//LSB Distrib - codename tag
+_:BOOL=TRUE
 
 //Path to a file.
 _gmock_INCLUDES:FILEPATH=/usr/include/gmock/gmock.h
